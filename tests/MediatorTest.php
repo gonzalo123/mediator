@@ -10,7 +10,7 @@ class MediatorTest extends \PHPUnit_Framework_TestCase
 
         $isTriggered = false;
 
-        $mediator->connect('hello', function() use ($isTriggered)
+        $mediator->connect('hello', function() use (&$isTriggered)
         {
             $isTriggered = true;
         });
@@ -26,7 +26,7 @@ class MediatorTest extends \PHPUnit_Framework_TestCase
 
         $isTriggered['gonzalo'] = false;
 
-        $mediator->connect('hello', function($name) use ($isTriggered)
+        $mediator->connect('hello', function($name) use (&$isTriggered)
         {
             $isTriggered['gonzalo'] = true;
         });
@@ -42,7 +42,7 @@ class MediatorTest extends \PHPUnit_Framework_TestCase
 
         $isTriggered = false;
 
-        $mediator->connect('hello', function() use ($isTriggered)
+        $mediator->connect('hello', function() use (&$isTriggered)
         {
             $isTriggered = true;
         });
@@ -50,7 +50,8 @@ class MediatorTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($isTriggered);
         $mediator->trigger('hello');
         $this->assertTrue($isTriggered);
-
+        
+        $isTriggered = false;
         $mediator->disconnect('hello');
         $mediator->trigger('hello');
         $this->assertFalse($isTriggered);
